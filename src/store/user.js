@@ -1,23 +1,21 @@
 const userState = {
-    namespaced: true,
-    state: {
-        isLoggedIn: false,
-        dialog:false,
-        userDetail:{
-            name:"Brian kim"
-        }
+  namespaced: true,
+  state: {
+    isLoggedIn: false,
+    dialog: false,
+    userDetail: {
+      name: "Brian Kim",
     },
-    actions: {
-
+  },
+  actions: {},
+  mutations: {
+    setLoggedIn(state, payload) {
+      state.isLoggedIn = payload;
     },
-    mutations: {
-        setLoggedIn(state, payload) {
-            state.isLoggedIn = payload
-        },
-        setLoginDialog(state, payload) {
-            state.dialog = payload
-        },
+    setLoginDialog(state, payload) {
+      state.dialog = payload;
     },
+  },
 };
 
 export default userState;

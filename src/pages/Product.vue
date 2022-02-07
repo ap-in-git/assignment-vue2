@@ -84,7 +84,9 @@
           v-model="commentedText"
         ></v-text-field>
         <div class="mt-1 text-right">
-          <v-btn color="secondary" type="submit">Submit</v-btn>
+          <v-btn color="secondary" type="submit">{{
+            isLoggedIn ? "Submit" : "Login"
+          }}</v-btn>
         </div>
       </v-form>
     </v-container>
@@ -134,6 +136,9 @@ export default {
       }
       return totalReview / reviews.length;
     },
+    isLoggedIn() {
+      return this.$store.state.user.isLoggedIn;
+    },
     reviews() {
       const slug = this.$route.params.slug;
       return this.$store.state.product.reviews.filter((p) => p.slug === slug);
@@ -161,6 +166,10 @@ export default {
       this.$store.commit("cart/toggleDrawer", true);
     },
     submitForm() {
+      if (!this.isLoggedIn) {
+        this.$store.commit("user/setLoginDialog", true);
+        return;
+      }
       if (this.commentedText === "") {
         this.$store.dispatch(
           "notification/showErrorMessage",
@@ -173,7 +182,7 @@ export default {
         commentedAt: new Date().toLocaleString(),
         rating: this.rating,
         text: this.commentedText,
-        commentedBy: "Ashok Poudel",
+        commentedBy: this.$store.state.user.userDetail.name,
         slug: this.$route.params.slug,
       });
       this.commentedText = "";
