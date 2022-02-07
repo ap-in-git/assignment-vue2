@@ -119,7 +119,7 @@
 
           <div class="mt-8">
             <v-btn color="primary" block="" elevation="0" v-if="cartItems.length > 0" @click="proceedToCheckout">
-              {{isLoggedIn?"Login":"Proceed to checkout"}}
+              {{isLoggedIn?"Proceed to checkout":"Login"}}
             </v-btn>
           </div>
         </div>
@@ -146,6 +146,10 @@ export default {
       console.log(val);
     },
     proceedToCheckout(){
+      if (!this.isLoggedIn){
+        this.$store.commit("user/setLoginDialog",true)
+        return
+      }
       this.$router.push({
         name:"CheckoutPage"
       })
