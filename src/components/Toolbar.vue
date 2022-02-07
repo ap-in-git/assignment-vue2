@@ -11,9 +11,14 @@
       <span v-if="isLoggedIn">
         {{ loggedInUserDetail }}
       </span>
-      <v-btn icon="" @click="dialog = true">
+
+      <v-btn icon="" v-if="isLoggedIn">
         <v-icon dark>mdi-account-outline</v-icon>
       </v-btn>
+      <v-btn icon="" @click="dialog = true" v-else>
+        <v-icon dark>mdi-account-outline</v-icon>
+      </v-btn>
+
       <v-btn :icon="true" @click="drawer = !drawer">
         <v-icon>mdi-cart-outline</v-icon>
       </v-btn>
@@ -73,8 +78,8 @@
       right
       class="px-2"
     >
+      <div>
         <div>
-          <div>
           <div class="py-6 font-weight-bold display-1">Shopping cart</div>
           <v-divider />
           <div v-for="cartItem in cartItems" :key="cartItem.slug" class="mt-2">
@@ -115,15 +120,20 @@
           <div v-if="cartItems.length === 0">
             <div class="py-6 font-weight-bold">No items in shopping cart</div>
           </div>
-          </div>
-
-          <div class="mt-8">
-            <v-btn color="primary" block="" elevation="0" v-if="cartItems.length > 0" @click="proceedToCheckout">
-              {{isLoggedIn?"Proceed to checkout":"Login"}}
-            </v-btn>
-          </div>
         </div>
 
+        <div class="mt-8">
+          <v-btn
+            color="primary"
+            block=""
+            elevation="0"
+            v-if="cartItems.length > 0"
+            @click="proceedToCheckout"
+          >
+            {{ isLoggedIn ? 'Proceed to checkout' : 'Login' }}
+          </v-btn>
+        </div>
+      </div>
     </v-navigation-drawer>
   </div>
 </template>
@@ -133,50 +143,50 @@ export default {
   data() {
     return {
       valid: true,
-      errorMessage: "",
-      nameRules: [(v) => !!v || "Email is required"],
-      passwordRules: [(v) => !!v || "Password is required"],
-      email: "",
-      password: "",
+      errorMessage: '',
+      nameRules: [(v) => !!v || 'Email is required'],
+      passwordRules: [(v) => !!v || 'Password is required'],
+      email: '',
+      password: '',
     };
   },
-  name: "Toolbar",
+  name: 'Toolbar',
   methods: {
     handleClose(val) {
       console.log(val);
     },
-    proceedToCheckout(){
-      if (!this.isLoggedIn){
-        this.$store.commit("user/setLoginDialog",true)
-        return
-      }
-      this.$router.push({
-        name:"CheckoutPage"
-      })
-    },
-    logoutUser() {
-      this.$store.commit("user/setLoggedIn", false);
-    },
-    login() {
-      this.errorMessage = "";
-      if (!this.$refs.form.validate()){
+    proceedToCheckout() {
+      if (!this.isLoggedIn) {
+        this.$store.commit('user/setLoginDialog', true);
         return;
       }
-      if (this.email === "hi@test.com" && this.password === "password") {
-        this.$store.commit("user/setLoggedIn", true);
+      this.$router.push({
+        name: 'CheckoutPage',
+      });
+    },
+    logoutUser() {
+      this.$store.commit('user/setLoggedIn', false);
+    },
+    login() {
+      this.errorMessage = '';
+      if (!this.$refs.form.validate()) {
+        return;
+      }
+      if (this.email === 'hi@test.com' && this.password === 'password') {
+        this.$store.commit('user/setLoggedIn', true);
         this.dialog = false;
       } else {
-        this.errorMessage = "Email or password is incorrect";
+        this.errorMessage = 'Email or password is incorrect';
       }
     },
     increment(product) {
-      this.$store.commit("cart/increment", product);
+      this.$store.commit('cart/increment', product);
     },
     decrement(product) {
-      this.$store.commit("cart/decrement", product);
+      this.$store.commit('cart/decrement', product);
     },
     removeItem(product) {
-      this.$store.commit("cart/removeItem", product);
+      this.$store.commit('cart/removeItem', product);
     },
   },
   computed: {
@@ -195,7 +205,7 @@ export default {
         return this.$store.state.cart.drawer;
       },
       set(val) {
-        this.$store.commit("cart/toggleDrawer", val);
+        this.$store.commit('cart/toggleDrawer', val);
       },
     },
     dialog: {
@@ -203,7 +213,7 @@ export default {
         return this.$store.state.user.dialog;
       },
       set(val) {
-        this.$store.commit("user/setLoginDialog", val);
+        this.$store.commit('user/setLoginDialog', val);
       },
     },
   },
