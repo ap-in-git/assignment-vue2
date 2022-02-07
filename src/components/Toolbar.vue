@@ -130,7 +130,7 @@
             v-if="cartItems.length > 0"
             @click="proceedToCheckout"
           >
-            {{ isLoggedIn ? 'Proceed to checkout' : 'Login' }}
+            {{ isLoggedIn ? 'Proceed to checkout' : 'Login to checkout' }}
           </v-btn>
         </div>
       </div>

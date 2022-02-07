@@ -3,6 +3,9 @@
     <v-row>
       <v-col cols="6" offset="3" class="my-12">
         <div class="display-1 font-weight-bold">Cart</div>
+        <v-alert type="success" v-if="showCheckoutMessage">
+          Checked out successfully
+        </v-alert>
         <div v-if="cartItems.length">
           <v-card
               elevation="0"
@@ -43,7 +46,7 @@
           </v-card>
           <div class="title font-weight-bold text-right my-5">
             Total: $ {{ totalPrice }}
-            <v-btn color="secondary" class="ml-2"
+            <v-btn color="secondary" class="ml-2" @click="confirmCheckout"
             >Confirm
             </v-btn>
           </div>
@@ -67,7 +70,16 @@
 <script>
 export default {
   name: "CheckoutPage",
+  data(){
+    return {
+      showCheckoutMessage: false
+    }
+  },
   methods:{
+    confirmCheckout(){
+      this.showCheckoutMessage = true
+      this.$store.commit("cart/emptyCart")
+    },
     addProductToCart(product) {
       this.$store.commit("cart/addProductToCart",product)
       this.$store.commit("cart/toggleDrawer",true)

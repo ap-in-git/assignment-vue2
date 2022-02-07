@@ -8,6 +8,9 @@ const cartState = {
 
     },
     mutations: {
+        emptyCart(state){
+            state.items = []
+        },
         increment(state,payload) {
             const items = [...state.items];
             for (let i = 0; i <items.length ; i++) {
