@@ -18,6 +18,11 @@ Vue.use(VueRouter);
                 path: "/product",
                 name:"ProductPage",
                 component: ()=>import("../pages/ProductPage"),
+            },
+            {
+                path: "/checkout",
+                name:"CheckoutPage",
+                component: ()=>import("../pages/CheckoutPage"),
             }
 
 ];

@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <div class="display-1 font-weight-bold">Products</div>
     <v-row wrap>
     <v-col cols="3" v-for="product in products" :key="product.slug">
       <v-card elevation="1" class="my-4 py-4">

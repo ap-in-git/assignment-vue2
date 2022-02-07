@@ -12,5 +12,6 @@ import Toolbar from "@/components/Toolbar";
 export default {
   name: "App",
   components:{Toolbar}
+
 };
 </script>

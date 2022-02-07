@@ -73,11 +73,8 @@
       right
       class="px-2"
     >
-      <div
-        class="d-flex flex-column justify-space-between"
-        style="height: 100%"
-      >
         <div>
+          <div>
           <div class="py-6 font-weight-bold display-1">Shopping cart</div>
           <v-divider />
           <div v-for="cartItem in cartItems" :key="cartItem.slug" class="mt-2">
@@ -118,19 +115,15 @@
           <div v-if="cartItems.length === 0">
             <div class="py-6 font-weight-bold">No items in shopping cart</div>
           </div>
-        </div>
-        <div class="pb-8">
-          <!--           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci
-          alias amet blanditiis doloribus eos est et exercitationem fuga ipsum,
-          molestias neque, officiis repellat tempore tenetur, vero vitae
-          voluptates voluptatum. Esse. -->
-          <div v-if="cartItems.length > 0">
-            <v-btn variant="outlined" color="primary" block="">
-              Proceed to checkout
+          </div>
+
+          <div class="mt-8">
+            <v-btn color="primary" block="" elevation="0" v-if="cartItems.length > 0" @click="proceedToCheckout">
+              {{isLoggedIn?"Login":"Proceed to checkout"}}
             </v-btn>
           </div>
         </div>
-      </div>
+
     </v-navigation-drawer>
   </div>
 </template>
@@ -140,9 +133,8 @@ export default {
   data() {
     return {
       valid: true,
-      dialog: false,
       errorMessage: "",
-      nameRules: [(v) => !!v || "Name is required"],
+      nameRules: [(v) => !!v || "Email is required"],
       passwordRules: [(v) => !!v || "Password is required"],
       email: "",
       password: "",
@@ -153,17 +145,18 @@ export default {
     handleClose(val) {
       console.log(val);
     },
+    proceedToCheckout(){
+      this.$router.push({
+        name:"CheckoutPage"
+      })
+    },
     logoutUser() {
       this.$store.commit("user/setLoggedIn", false);
     },
     login() {
       this.errorMessage = "";
-      if (this.email === "") {
-        this.errorMessage = "Email is required";
+      if (!this.$refs.form.validate()){
         return;
-      }
-      if (this.password === "") {
-        this.errorMessage = "Password is required";
       }
       if (this.email === "hi@test.com" && this.password === "password") {
         this.$store.commit("user/setLoggedIn", true);
@@ -199,6 +192,14 @@ export default {
       },
       set(val) {
         this.$store.commit("cart/toggleDrawer", val);
+      },
+    },
+    dialog: {
+      get() {
+        return this.$store.state.user.dialog;
+      },
+      set(val) {
+        this.$store.commit("user/setLoginDialog", val);
       },
     },
   },

@@ -2,6 +2,7 @@ const userState = {
     namespaced: true,
     state: {
         isLoggedIn: false,
+        dialog:false,
         userDetail:{
             name:"Brian kim"
         }
@@ -12,6 +13,9 @@ const userState = {
     mutations: {
         setLoggedIn(state, payload) {
             state.isLoggedIn = payload
+        },
+        setLoginDialog(state, payload) {
+            state.dialog = payload
         },
     },
 };
