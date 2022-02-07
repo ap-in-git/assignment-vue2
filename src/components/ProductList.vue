@@ -6,7 +6,6 @@
         <v-card
           elevation="1"
           class="my-4 py-4"
-          :to="{ name: 'Product', params: { slug: product.slug } }"
         >
           <v-card-text class="text-center">
             <v-img
@@ -30,7 +29,7 @@
               elevation="0"
               small
               rounded
-              @click="addProductToCart(product)"
+              @click.prevent="addProductToCart(product)"
               >Add to cart
             </v-btn>
           </v-card-text>
@@ -45,6 +44,7 @@ export default {
   name: 'ProductList',
   methods: {
     addProductToCart(product) {
+      console.log(product)
       this.$store.commit('cart/addProductToCart', product);
       this.$store.commit('cart/toggleDrawer', true);
     },
