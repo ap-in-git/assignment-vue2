@@ -1,4 +1,13 @@
 # ecommerce-vue2
+##  Optional features implemented
+
+- Product details page
+- Updating quantity or removing products from cart
+- Display comments
+- Comments rating
+- Username when logged in
+- anonymous shopping
+
 
 ## Project setup
 ```

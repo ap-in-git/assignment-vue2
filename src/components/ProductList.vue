@@ -19,19 +19,31 @@
                 elevation="0"
                 color="secondary"
                 class="text-capitalize font-weight-bold title"
+                @click="redirectToProduct(product.slug)"
                 >{{ product.name }}
               </v-btn>
             </div>
             <div class="subtitle my-2 font-weight-bold">
               $ {{ product.price }}
             </div>
-            <v-btn
-              elevation="0"
-              small
-              rounded
-              @click.prevent="addProductToCart(product)"
+            <div class="d-flex">
+              <v-btn
+                  elevation="0"
+                  small
+                  rounded
+                  @click.prevent="redirectToProduct(product.slug)"
+              >View product
+              </v-btn>
+              <v-btn
+                  class="ml-3"
+                  elevation="0"
+                  small
+                  rounded
+                  @click.prevent="addProductToCart(product)"
               >Add to cart
-            </v-btn>
+              </v-btn>
+            </div>
+
           </v-card-text>
         </v-card>
       </v-col>
@@ -48,6 +60,9 @@ export default {
       this.$store.commit('cart/addProductToCart', product);
       this.$store.commit('cart/toggleDrawer', true);
     },
+    redirectToProduct(slug){
+      console.log(slug)
+    }
   },
   computed: {
     products() {
