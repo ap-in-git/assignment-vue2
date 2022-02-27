@@ -1,9 +1,9 @@
 <template>
   <div>
-    <v-container fluid style="padding: 0">
+    <v-container fluid style="padding: 0" v-if="product !== undefined">
       <v-row>
         <v-col sm="7" style="padding-bottom: 0">
-          <v-img :src="product.bannerImage" />
+          <v-img :src="product.banner_image" />
         </v-col>
         <v-col
           sm="5"
@@ -47,11 +47,11 @@
       <v-row class="my-6">
         <p class="text-h4">Reviews</p>
         <v-col sm="12" v-for="item in reviews" :key="item._id">
-          <v-card v-if="product.slug === item.slug" class="my-2" elevation="0">
+          <v-card v-if="product.id == item.product_id" class="my-2" elevation="0">
             <v-card-title>
-              <span class="font-weight-bold mr-4">{{ item.commentedBy }}</span>
+              <span class="font-weight-bold mr-4">{{ item.user.name }}</span>
               <small class="grey--text">{{
-                new Date(item.commentedAt).toLocaleString()
+                new Date(item.commented_at).toLocaleString()
               }}</small>
               <v-spacer />
               <v-rating
@@ -97,14 +97,14 @@
       <div class="d-flex justify-space-between align-center">
         <div
           v-for="relatedProduct in relatedProducts"
-          :key="relatedProduct.slug"
+          :key="relatedProduct.id"
           class="d-flex align-center justify-center"
           style="flex-direction: column; cursor: pointer"
-          @click="goToProduct(relatedProduct.slug)"
+          @click="goToProduct(relatedProduct.id)"
         >
-          <v-img height="200" width="200" :src="relatedProduct.image"></v-img>
+          <v-img height="200" width="200" :src="relatedProduct.thumbnail_image"></v-img>
           <p style="font-size: 2rem">
-            {{ relatedProduct.name }}
+            {{ relatedProduct.title }}
           </p>
           <p style="font-size: 24px">$ {{ relatedProduct.price }}</p>
         </div>
@@ -115,6 +115,12 @@
 
 <script>
 export default {
+  mounted() {
+    this.$store.dispatch("product/fetchProducts")
+    this.$store.dispatch("product/getReviews",{
+      product_id: this.$route.params.id
+    })
+  },
   name: "Product",
   data: () => ({
     rating: 5,
@@ -122,9 +128,9 @@ export default {
   }),
   computed: {
     averageReview() {
-      const slug = this.$route.params.slug;
+      const id = this.$route.params.id;
       const reviews = this.$store.state.product.reviews.filter(
-        (p) => p.slug === slug
+        (p) => p.product_id == id
       );
       if (reviews.length === 0) {
         return 0;
@@ -140,24 +146,23 @@ export default {
       return this.$store.state.user.isLoggedIn;
     },
     reviews() {
-      const slug = this.$route.params.slug;
-      return this.$store.state.product.reviews.filter((p) => p.slug === slug);
+      const id = this.$route.params.id;
+      return this.$store.state.product.reviews.filter((p) => p.product_id == id);
     },
     reviewCount() {
-      const slug = this.$route.params.slug;
-      return this.$store.state.product.reviews.filter((p) => p.slug === slug)
-        .length;
+      const id = this.$route.params.id;
+      return this.$store.state.product.reviews.filter((p) => p.product_id == id).length;
     },
     products() {
       return this.$store.state.product.products;
     },
     product() {
-      const slug = this.$route.params.slug;
-      return this.products.find((p) => p.slug === slug);
+      const id = this.$route.params.id;
+      return this.products.find((p) => p.id == id);
     },
     relatedProducts() {
-      const slug = this.$route.params.slug;
-      return this.products.filter((p) => p.slug !== slug);
+      const id = this.$route.params.id;
+      return this.products.filter((p) => p.id !== id);
     },
   },
   methods: {
@@ -177,23 +182,21 @@ export default {
         );
         return;
       }
-      this.$store.commit("product/addReview", {
-        _id: this.reviewCount + 1,
-        commentedAt: new Date().toLocaleString(),
-        rating: this.rating,
-        text: this.commentedText,
-        commentedBy: this.$store.state.user.userDetail.name,
-        slug: this.$route.params.slug,
-      });
-      this.commentedText = "";
-      this.rating = 5;
-      this.$store.dispatch(
-        "notification/showSuccessMessage",
-        "Review added successfully"
-      );
+      this.$store.dispatch("product/addReview",{
+          text: this.commentedText,
+          rating: this.rating,
+          product_id: this.product.id
+      }).then((message) => {
+        console.log(message)
+        this.$store.dispatch(
+            "notification/showSuccessMessage",
+            message
+        );
+      })
+
     },
-    goToProduct(slug) {
-      this.$router.push({ name: "Product", params: { slug } });
+    goToProduct(id) {
+      this.$router.push({ name: "Product", params: { id } });
     },
   },
 };

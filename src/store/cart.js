@@ -1,3 +1,4 @@
+
 const cartState = {
     namespaced: true,
     state: {
@@ -14,7 +15,7 @@ const cartState = {
         increment(state,payload) {
             const items = [...state.items];
             for (let i = 0; i <items.length ; i++) {
-                if (items[i].slug === payload.slug) {
+                if (items[i].id === payload.id) {
                     items[i].quantity = items[i].quantity + 1;
                 }
             }
@@ -22,7 +23,7 @@ const cartState = {
         },
         removeItem(state,payload) {
             let items = [...state.items];
-            items = items.filter( it =>it.slug !== payload.slug)
+            items = items.filter( it =>it.id !== payload.id)
 
             state.items = items
         },
@@ -30,7 +31,7 @@ const cartState = {
             let items = [...state.items];
             let removeProduct = false;
             for (let i = 0; i <items.length ; i++) {
-                if (items[i].slug === payload.slug) {
+                if (items[i].id === payload.id) {
                     if (items[i].quantity > 1){
                         items[i].quantity = items[i].quantity - 1;
                     }else{
@@ -39,7 +40,7 @@ const cartState = {
                 }
             }
             if (removeProduct){
-                items = items.filter( it =>it.slug !== payload.slug)
+                items = items.filter( it =>it.id !== payload.id)
             }
             state.items = items
         },
@@ -50,7 +51,7 @@ const cartState = {
             const items = [...state.items];
             let itemFound = false
             for (let i = 0; i <items.length ; i++) {
-                if (items[i].slug === payload.slug) {
+                if (items[i].id === payload.id) {
                     itemFound = true
                     items[i].quantity = items[i].quantity + 1;
                 }

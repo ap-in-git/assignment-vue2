@@ -10,7 +10,7 @@
           <v-card
               elevation="0"
               v-for="cart in cartItems"
-              :key="cart.slug"
+              :key="cart.id"
               class="my-2"
           >
             <v-card-title>
@@ -18,7 +18,7 @@
                   plain
                   color="secondary"
                   class="text-capitalize font-weight-bold title"
-                  :to="{ name: 'Product', params: { id: cart.slug } }"
+                  :to="{ name: 'Product', params: { id: cart.id } }"
               >{{ cart.name }}
               </v-btn>
               <v-spacer />

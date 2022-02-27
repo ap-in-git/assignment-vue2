@@ -4,7 +4,7 @@ Vue.use(VueRouter);
 
  const routes = [
        {
-            path:"/product/:slug",
+            path:"/product/:id",
             component: () => import("../pages/Product"),
             name:"Product"
         },

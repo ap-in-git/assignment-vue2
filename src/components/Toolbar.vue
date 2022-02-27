@@ -82,9 +82,9 @@
         <div>
           <div class="py-6 font-weight-bold display-1">Shopping cart</div>
           <v-divider />
-          <div v-for="cartItem in cartItems" :key="cartItem.slug" class="mt-2">
+          <div v-for="cartItem in cartItems" :key="cartItem.id" class="mt-2">
             <div class="d-flex">
-              <v-img :width="75" :height="75" :src="cartItem.image" />
+              <v-img :width="75" :height="75" :src="cartItem.thumbnail_image" />
               <div class="ml-1">
                 <div class="d-flex justify-space-between">
                   <div class="font-weight-bold">

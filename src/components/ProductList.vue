@@ -2,7 +2,7 @@
   <v-container>
     <div class="display-1 font-weight-bold">Products</div>
     <v-row wrap>
-      <v-col cols="3" v-for="product in products" :key="product.slug">
+      <v-col cols="3" v-for="product in products" :key="product.id">
         <v-card
           elevation="1"
           class="my-4 py-4"
@@ -12,15 +12,15 @@
               class="v-card--link"
               height="125"
               contain
-              :src="product.image"
+              :src="product.thumbnail_image"
             />
             <div class="mt-4">
               <v-btn
                 elevation="0"
                 color="secondary"
                 class="text-capitalize font-weight-bold title"
-                @click="redirectToProduct(product.slug)"
-                >{{ product.name }}
+                @click="redirectToProduct(product.id)"
+                >{{ product.title }}
               </v-btn>
             </div>
             <div class="subtitle my-2 font-weight-bold">
@@ -31,7 +31,7 @@
                   elevation="0"
                   small
                   rounded
-                  @click.prevent="redirectToProduct(product.slug)"
+                  @click.prevent="redirectToProduct(product.id)"
               >View product
               </v-btn>
               <v-btn
@@ -52,17 +52,25 @@
 </template>
 
 <script>
+
 export default {
   name: 'ProductList',
   methods: {
     addProductToCart(product) {
-      console.log(product)
       this.$store.commit('cart/addProductToCart', product);
       this.$store.commit('cart/toggleDrawer', true);
     },
-    redirectToProduct(slug){
-      console.log(slug)
+    redirectToProduct(id){
+      this.$router.push({
+        name:"Product",
+        params:{
+          id:id
+        }}
+      )
     }
+  },
+  mounted() {
+     this.$store.dispatch("product/fetchProducts")
   },
   computed: {
     products() {
