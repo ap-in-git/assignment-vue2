@@ -10,6 +10,14 @@
 
 
 ## Project setup
+### Copy  .env file
+```
+cp .env.example .env
+```
+set `VUE_APP_API_URL` in .env 
+It can be `http://web-php.test/api`
+
+### Install packages
 ```
 yarn install
 ```
@@ -31,3 +39,5 @@ yarn lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
