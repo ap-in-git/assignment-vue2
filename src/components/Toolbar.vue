@@ -144,10 +144,11 @@ export default {
     return {
       valid: true,
       errorMessage: '',
-      nameRules: [(v) => !!v || 'Email is required'],
-      passwordRules: [(v) => !!v || 'Password is required'],
       email: '',
       password: '',
+      nameRules: [(v) => !!v || 'Email is required'],
+      passwordRules: [(v) => !!v || 'Password is required'],
+
     };
   },
   name: 'Toolbar',
