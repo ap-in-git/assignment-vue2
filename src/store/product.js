@@ -11,21 +11,20 @@ const productState = {
             const formData = new FormData();
             formData.append("text",payload.text)
             formData.append("rating",payload.rating)
-            formData.append("user_id",1)
+            formData.append("user_id",'62309e195e765c1ba9f28af2')
             formData.append("product_id",payload.product_id)
             const res = await publicApi.post("/comments/",formData);
-            commit("addReview",res.data.data)
+            commit("addReview",res.data.comment)
              return res.data.message;
 
         },
         fetchProducts({commit}){
             publicApi.get("/products").then( res => {
                 commit("setProducts",res.data)
-                console.log(res.data)
             })
         },
         getReviews({commit},payload){
-            publicApi.get("/comments?product_id="+payload.product_id).then((res) => {
+            publicApi.get("/comments/"+payload.product_id).then((res) => {
                 commit("setReviews",res.data)
             })
         }

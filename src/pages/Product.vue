@@ -6,17 +6,17 @@
           <v-img :src="product.banner_image" />
         </v-col>
         <v-col
-          sm="5"
-          class="pl-16 pt-10 pr-16"
-          style="background-color: #f7f3ee"
+            sm="5"
+            class="pl-16 pt-10 pr-16"
+            style="background-color: #f7f3ee"
         >
           <p class="text-h4 pt-12 pb-6">{{ product.name }}</p>
           <p class="text-h5">${{ product.price }}</p>
           <div class="d-flex align-center">
             <v-rating
-              v-model="averageReview"
-              :readonly="true"
-              size="14"
+                v-model="averageReview"
+                :readonly="true"
+                size="14"
             ></v-rating>
             <span class="grey--text text--lighten-2 text-caption ml-2">
               ({{ reviewCount }} reviews)
@@ -32,11 +32,11 @@
           <v-row class="d-flex justify-center">
             <div style="width: 320px">
               <v-btn
-                class="mt-10"
-                outlined
-                :block="true"
-                @click="addProductToCart(product)"
-                >Add to cart</v-btn
+                  class="mt-10"
+                  outlined
+                  :block="true"
+                  @click="addProductToCart(product)"
+              >Add to cart</v-btn
               >
             </div>
           </v-row>
@@ -51,15 +51,15 @@
             <v-card-title>
               <span class="font-weight-bold mr-4">{{ item.user.name }}</span>
               <small class="grey--text">{{
-                new Date(item.commented_at).toLocaleString()
-              }}</small>
+                  new Date(item.commented_at).toLocaleString()
+                }}</small>
               <v-spacer />
               <v-rating
-                :readonly="true"
-                :value="parseInt(item.rating)"
-                :length="5"
-                small
-                color="secondary"
+                  :readonly="true"
+                  :value="parseInt(item.rating)"
+                  :length="5"
+                  small
+                  color="secondary"
               ></v-rating>
             </v-card-title>
             <v-card-text>
@@ -72,21 +72,21 @@
       <v-divider />
       <v-form @submit.prevent="submitForm">
         <v-rating
-          v-model="rating"
-          background-color="secondary"
-          color="secondary"
+            v-model="rating"
+            background-color="secondary"
+            color="secondary"
         ></v-rating>
         <v-text-field
-          name="input-7-1"
-          class="mt-1"
-          outlined
-          label="Tell us your feedback about the product"
-          v-model="commentedText"
+            name="input-7-1"
+            class="mt-1"
+            outlined
+            label="Tell us your feedback about the product"
+            v-model="commentedText"
         ></v-text-field>
         <div class="mt-1 text-right">
           <v-btn color="secondary" type="submit">{{
-            isLoggedIn ? "Submit" : "Login"
-          }}</v-btn>
+              isLoggedIn ? "Submit" : "Login"
+            }}</v-btn>
         </div>
       </v-form>
     </v-container>
@@ -96,11 +96,11 @@
       </v-row>
       <div class="d-flex justify-space-between align-center">
         <div
-          v-for="relatedProduct in relatedProducts"
-          :key="relatedProduct.id"
-          class="d-flex align-center justify-center"
-          style="flex-direction: column; cursor: pointer"
-          @click="goToProduct(relatedProduct.id)"
+            v-for="relatedProduct in relatedProducts"
+            :key="relatedProduct.id"
+            class="d-flex align-center justify-center"
+            style="flex-direction: column; cursor: pointer"
+            @click="goToProduct(relatedProduct.id)"
         >
           <v-img height="200" width="200" :src="relatedProduct.thumbnail_image"></v-img>
           <p style="font-size: 2rem">
@@ -130,7 +130,7 @@ export default {
     averageReview() {
       const id = this.$route.params.id;
       const reviews = this.$store.state.product.reviews.filter(
-        (p) => p.product_id == id
+          (p) => p.product_id == id
       );
       if (reviews.length === 0) {
         return 0;
@@ -177,15 +177,15 @@ export default {
       }
       if (this.commentedText === "") {
         this.$store.dispatch(
-          "notification/showErrorMessage",
-          "Review text is missing"
+            "notification/showErrorMessage",
+            "Review text is missing"
         );
         return;
       }
       this.$store.dispatch("product/addReview",{
-          text: this.commentedText,
-          rating: this.rating,
-          product_id: this.product.id
+        text: this.commentedText,
+        rating: this.rating,
+        product_id: this.product.id
       }).then((message) => {
         console.log(message)
         this.$store.dispatch(
