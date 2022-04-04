@@ -3,16 +3,13 @@
     <div class="display-1 font-weight-bold">Products</div>
     <v-row wrap>
       <v-col cols="3" v-for="product in products" :key="product.id">
-        <v-card
-          elevation="1"
-          class="my-4 py-4"
-        >
+        <v-card elevation="1" class="my-4 py-4">
           <v-card-text class="text-center">
             <v-img
               class="v-card--link"
               height="125"
               contain
-              :src="product.thumbnail_image"
+              :src="product.thumbnailImage"
             />
             <div class="mt-4">
               <v-btn
@@ -28,22 +25,21 @@
             </div>
             <div class="d-flex">
               <v-btn
-                  elevation="0"
-                  small
-                  rounded
-                  @click.prevent="redirectToProduct(product.id)"
-              >View product
+                elevation="0"
+                small
+                rounded
+                @click.prevent="redirectToProduct(product.id)"
+                >View product
               </v-btn>
               <v-btn
-                  class="ml-3"
-                  elevation="0"
-                  small
-                  rounded
-                  @click.prevent="addProductToCart(product)"
-              >Add to cart
+                class="ml-3"
+                elevation="0"
+                small
+                rounded
+                @click.prevent="addProductToCart(product)"
+                >Add to cart
               </v-btn>
             </div>
-
           </v-card-text>
         </v-card>
       </v-col>
@@ -52,25 +48,24 @@
 </template>
 
 <script>
-
 export default {
-  name: 'ProductList',
+  name: "ProductList",
   methods: {
     addProductToCart(product) {
-      this.$store.commit('cart/addProductToCart', product);
-      this.$store.commit('cart/toggleDrawer', true);
+      this.$store.commit("cart/addProductToCart", product);
+      this.$store.commit("cart/toggleDrawer", true);
     },
-    redirectToProduct(id){
+    redirectToProduct(id) {
       this.$router.push({
-        name:"Product",
-        params:{
-          id:id
-        }}
-      )
-    }
+        name: "Product",
+        params: {
+          id: id,
+        },
+      });
+    },
   },
   mounted() {
-     this.$store.dispatch("product/fetchProducts")
+    this.$store.dispatch("product/fetchProducts");
   },
   computed: {
     products() {

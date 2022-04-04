@@ -3,20 +3,20 @@
     <v-container fluid style="padding: 0" v-if="product !== undefined">
       <v-row>
         <v-col sm="7" style="padding-bottom: 0">
-          <v-img :src="product.banner_image" />
+          <v-img :src="product.bannerImage" />
         </v-col>
         <v-col
-            sm="5"
-            class="pl-16 pt-10 pr-16"
-            style="background-color: #f7f3ee"
+          sm="5"
+          class="pl-16 pt-10 pr-16"
+          style="background-color: #f7f3ee"
         >
           <p class="text-h4 pt-12 pb-6">{{ product.name }}</p>
           <p class="text-h5">${{ product.price }}</p>
           <div class="d-flex align-center">
             <v-rating
-                v-model="averageReview"
-                :readonly="true"
-                size="14"
+              v-model="averageReview"
+              :readonly="true"
+              size="14"
             ></v-rating>
             <span class="grey--text text--lighten-2 text-caption ml-2">
               ({{ reviewCount }} reviews)
@@ -32,11 +32,11 @@
           <v-row class="d-flex justify-center">
             <div style="width: 320px">
               <v-btn
-                  class="mt-10"
-                  outlined
-                  :block="true"
-                  @click="addProductToCart(product)"
-              >Add to cart</v-btn
+                class="mt-10"
+                outlined
+                :block="true"
+                @click="addProductToCart(product)"
+                >Add to cart</v-btn
               >
             </div>
           </v-row>
@@ -46,20 +46,24 @@
     <v-container class="mt-10">
       <v-row class="my-6">
         <p class="text-h4">Reviews</p>
-        <v-col sm="12" v-for="item in reviews" :key="item._id">
-          <v-card v-if="product.id == item.product_id" class="my-2" elevation="0">
+        <v-col sm="12" v-for="item in reviews" :key="item.id">
+          <v-card
+            v-if="product.id == item.productID"
+            class="my-2"
+            elevation="0"
+          >
             <v-card-title>
-              <span class="font-weight-bold mr-4">{{ item.user.name }}</span>
+              <span class="font-weight-bold mr-4">{{ "Brian Kim" }}</span>
               <small class="grey--text">{{
-                  new Date(item.commented_at).toLocaleString()
-                }}</small>
+                new Date(item.commentedAt).toLocaleString()
+              }}</small>
               <v-spacer />
               <v-rating
-                  :readonly="true"
-                  :value="parseInt(item.rating)"
-                  :length="5"
-                  small
-                  color="secondary"
+                :readonly="true"
+                :value="parseInt(item.rating)"
+                :length="5"
+                small
+                color="secondary"
               ></v-rating>
             </v-card-title>
             <v-card-text>
@@ -72,21 +76,19 @@
       <v-divider />
       <v-form @submit.prevent="submitForm">
         <v-rating
-            v-model="rating"
-            background-color="secondary"
-            color="secondary"
+          v-model="rating"
+          background-color="secondary"
+          color="secondary"
         ></v-rating>
         <v-text-field
-            name="input-7-1"
-            class="mt-1"
-            outlined
-            label="Tell us your feedback about the product"
-            v-model="commentedText"
+          name="input-7-1"
+          class="mt-1"
+          outlined
+          label="Tell us your feedback about the product"
+          v-model="commentedText"
         ></v-text-field>
         <div class="mt-1 text-right">
-          <v-btn color="secondary" type="submit">{{
-              isLoggedIn ? "Submit" : "Login"
-            }}</v-btn>
+          <v-btn color="secondary" type="submit">{{ "Submit" }}</v-btn>
         </div>
       </v-form>
     </v-container>
@@ -96,13 +98,17 @@
       </v-row>
       <div class="d-flex justify-space-between align-center">
         <div
-            v-for="relatedProduct in relatedProducts"
-            :key="relatedProduct.id"
-            class="d-flex align-center justify-center"
-            style="flex-direction: column; cursor: pointer"
-            @click="goToProduct(relatedProduct.id)"
+          v-for="relatedProduct in relatedProducts"
+          :key="relatedProduct.id"
+          class="d-flex align-center justify-center"
+          style="flex-direction: column; cursor: pointer"
+          @click="goToProduct(relatedProduct.id)"
         >
-          <v-img height="200" width="200" :src="relatedProduct.thumbnail_image"></v-img>
+          <v-img
+            height="200"
+            width="200"
+            :src="relatedProduct.thumbnailImage"
+          ></v-img>
           <p style="font-size: 2rem">
             {{ relatedProduct.title }}
           </p>
@@ -116,10 +122,10 @@
 <script>
 export default {
   mounted() {
-    this.$store.dispatch("product/fetchProducts")
-    this.$store.dispatch("product/getReviews",{
-      product_id: this.$route.params.id
-    })
+    this.$store.dispatch("product/fetchProducts");
+    this.$store.dispatch("product/getReviews", {
+      product_id: this.$route.params.id,
+    });
   },
   name: "Product",
   data: () => ({
@@ -130,7 +136,7 @@ export default {
     averageReview() {
       const id = this.$route.params.id;
       const reviews = this.$store.state.product.reviews.filter(
-          (p) => p.product_id == id
+        (p) => p.productId == id
       );
       if (reviews.length === 0) {
         return 0;
@@ -147,11 +153,14 @@ export default {
     },
     reviews() {
       const id = this.$route.params.id;
-      return this.$store.state.product.reviews.filter((p) => p.product_id == id);
+      console.log(id);
+      console.log(this.$store.state.product.reviews);
+      return this.$store.state.product.reviews.filter((p) => p.productID == id);
     },
     reviewCount() {
       const id = this.$route.params.id;
-      return this.$store.state.product.reviews.filter((p) => p.product_id == id).length;
+      return this.$store.state.product.reviews.filter((p) => p.productID == id)
+        .length;
     },
     products() {
       return this.$store.state.product.products;
@@ -171,29 +180,27 @@ export default {
       this.$store.commit("cart/toggleDrawer", true);
     },
     submitForm() {
-      if (!this.isLoggedIn) {
-        this.$store.commit("user/setLoginDialog", true);
-        return;
-      }
+      // if (!this.isLoggedIn) {
+      //   this.$store.commit("user/setLoginDialog", true);
+      //   return;
+      // }
       if (this.commentedText === "") {
         this.$store.dispatch(
-            "notification/showErrorMessage",
-            "Review text is missing"
+          "notification/showErrorMessage",
+          "Review text is missing"
         );
         return;
       }
-      this.$store.dispatch("product/addReview",{
-        text: this.commentedText,
-        rating: this.rating,
-        product_id: this.product.id
-      }).then((message) => {
-        console.log(message)
-        this.$store.dispatch(
-            "notification/showSuccessMessage",
-            message
-        );
-      })
-
+      this.$store
+        .dispatch("product/addReview", {
+          text: this.commentedText,
+          rating: this.rating,
+          product_id: this.product.id,
+        })
+        .then((message) => {
+          console.log(message);
+          this.$store.dispatch("notification/showSuccessMessage", message);
+        });
     },
     goToProduct(id) {
       this.$router.push({ name: "Product", params: { id } });
